@@ -254,13 +254,6 @@ if($bloodType == "O-")
 
 
 
-$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $BankCode");
-$selectBank->execute();
-foreach ($selectBank as $key) {
-$BankName = $key['NAME'];
-}
-
- echo "<h3 style='color:#0075b4' class='text-center'>"."The Transaction Occured Successfully and <b>".$numberOfBags."</b> bags of type <b>".$bloodType."</b> will be delivered by <b>".$BankName."</b> BANK"."</h3>";
 
 
              // my insert to donor table
@@ -275,8 +268,16 @@ $BankName = $key['NAME'];
                     )
                     { $checkbloodbagaddition =0;
                       $code = $BankCode;
-                       echo "<h6 style='color:#0075b4' class='text-center'>"."Inserted Successfully"."</h6>";
+$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $BankCode");
+$selectBank->execute();
+foreach ($selectBank as $key) {
+$BankName = $key['NAME'];
+}
 
+ echo "<h3 style='color:#0075b4' class='text-center'>"."The Transaction Occured Successfully and <b>".$numberOfBags."</b> bags of type <b>".$bloodType."</b> will be delivered by <b>".$BankName."</b> BANK"."</h3>";
+echo "<h6 style='color:#0075b4' class='text-center'>"."Inserted Successfully"."</h6>";
+$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $BankCode");
+$selectBank->execute();
                          //remove for each ??
                         if($bloodType=="A+")
                         {
