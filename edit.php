@@ -6,12 +6,12 @@ require 'mySQLConnection.php';
 
  echo "<h1 style='color:#0075b4' class='text-center'>".$_SESSION["type"]."-".$_SESSION["user"]."-".$_SESSION["name"]."</h1>";
  $bankCode =$_GET["Bcode"];
+$selectBankData = $data ->prepare ("SELECT `NAME`, `LOCATION`, `NO_OF(A)`, `NO_OF(B)`, `NO_OF(AB)`, `NO_OF(O)`, `NO_OF(-O)`, `NO_OF(-A)`, `NO_OF(-B)`, `NO_OF(-AB)` FROM `BANKS` WHERE BCODE=:bc");
+            
 
  if(isset($_GET["action"])== "edit" && isset($_GET["Bcode"]))
  {
-			
-      $selectBankData = $data ->prepare ("SELECT `NAME`, `LOCATION`, `NO_OF(A)`, `NO_OF(B)`, `NO_OF(AB)`, `NO_OF(O)`, `NO_OF(-O)`, `NO_OF(-A)`, `NO_OF(-B)`, `NO_OF(-AB)` FROM `BANKS` WHERE BCODE=:bc");
-            
+			            
          
               if ($selectBankData->execute(array(":bc" => $bankCode)))
                 {
@@ -66,8 +66,7 @@ require 'mySQLConnection.php';
  }  
 
 
-$selectedBankData = $data ->prepare ("SELECT `NAME`, `LOCATION`, `NO_OF(A)`, `NO_OF(B)`, `NO_OF(AB)`, `NO_OF(O)`, `NO_OF(-O)`, `NO_OF(-A)`, `NO_OF(-B)`, `NO_OF(-AB)` FROM `BANKS` WHERE BCODE=:bc");              
-$selectedBankData->execute(array(":bc" => $bankCode));
+$selectBankData->execute(array(":bc" => $bankCode));
 
 
 ?>
@@ -97,7 +96,7 @@ $selectedBankData->execute(array(":bc" => $bankCode));
          
                     <?php 
 
-                        foreach ($selectedBankData as $qurry) 
+                        foreach ($selectBankData as $qurry) 
                         {
                           echo "<tr><th scope='col'>Name: </th><td>".$qurry['NAME']."</td></tr>";
                           echo "<tr><th scope='col'>Location: </th><td>".$qurry['LOCATION']."</td></tr>";

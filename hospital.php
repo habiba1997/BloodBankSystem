@@ -20,20 +20,14 @@ SELECT `Exchange_Code`, `BankCode`, `HospitalCode`, `Exchange_Date`, `No_of_Bags
         $numberOfBags = $_POST['numberOfBags'];
 
         // get bank code $hospitalBank from hospital using hospital code
-        $hospitalBankArray = $data->prepare("SELECT `Bankcode` FROM `Hospital` WHERE Hcode = $hospitalCode");
-        $hospitalBankArray->execute();
-        foreach ($hospitalBankArray as $key) {
-          $hospitalBank = $key['Bankcode'];
-        }
-        
-
-// get supplier bank code $supplierBankHospital from BANKS using hospitalBank code
-$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $hospitalBank");
-$selectBank->execute();
+        $selectBank = $data->prepare("SELECT * FROM `Hospital` JOIN `BANKS` WHERE Hcode = $hospitalCode AND Bankcode = BCODE");
+        $selectBank->execute();
 
 
 foreach ($selectBank as $key) 
 {
+
+          $hospitalBank = $key['Bankcode'];
           $supplierBankHospital = $key['Supplier'];
           $selectBankpositiveA = $key['NO_OF(A)'];
           $selectBanknegativeA = $key['NO_OF(-A)'];
@@ -260,7 +254,13 @@ if($bloodType == "O-")
 
 
 
+$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $BankCode");
+$selectBank->execute();
+foreach ($selectBank as $key) {
+$BankName = $key['NAME'];
+}
 
+ echo "<h3 style='color:#0075b4' class='text-center'>"."The Transaction Occured Successfully and <b>".$numberOfBags."</b> bags of type <b>".$bloodType."</b> will be delivered by <b>".$BankName."</b> BANK"."</h3>";
 
 
              // my insert to donor table
@@ -277,9 +277,6 @@ if($bloodType == "O-")
                       $code = $BankCode;
                        echo "<h6 style='color:#0075b4' class='text-center'>"."Inserted Successfully"."</h6>";
 
-$selectBank=$data->prepare("SELECT * FROM `BANKS` WHERE BCODE = $BankCode");
-$selectBank->execute();
-                        
                          //remove for each ??
                         if($bloodType=="A+")
                         {
@@ -396,7 +393,7 @@ else
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
   <style>
     body{ background-image: url(22.jpg);  font-family: 'Open Sans', sans-serif; background-size: cover; color: #0075b4}
-        h1{background-color: rgba(255,255,255,0.7); border-radius:1%;; margin: 3% 7%; padding: 3% 3%; width: 86%; }
+        h1,h3{background-color: rgba(255,255,255,0.7); border-radius:1%;; margin: 3% 7%; padding: 3% 3%; width: 86%; }
         .beebz{width: 96%;background-color: rgba(255,255,255,0.7); border-radius: 1%; margin: 2%; padding: 3%; display: block; }
         button{float: right; margin: 2% 5% 5% 5%; display: block;}
         h4{display: inline-block;}
